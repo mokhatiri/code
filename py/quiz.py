@@ -58,15 +58,6 @@ def are_amicable(X, Y, n = 1, A = 0 , B = 0):
     else:
         return False
 
-
-def pascals_triangle(n, s=0):
-    if n > 0:
-        s+=1
-        n-=1
-        print("*"*s)
-        pascals_triangle(n,s)
-
-
 def towers_of_hanoi(n, source = 'source', target = 'target', auxiliary = 'auxiliary'):
     if n==1:
         print (f"Move disk {n} from {source} to {target}")
