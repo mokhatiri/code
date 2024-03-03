@@ -17,7 +17,7 @@ int calPoints(char **operations, int operationsSize) {
             record[pointer] = malloc(sizeof(int));
             // just a good thing to do
             if (record[pointer] == NULL) {
-                perror("Memory allocation failed");
+                printf("Memory allocation failed");
                 exit(EXIT_FAILURE);
             }
             
@@ -34,7 +34,7 @@ int calPoints(char **operations, int operationsSize) {
         {
             record[pointer] = malloc(sizeof(int));
             if (record[pointer] == NULL) {
-                perror("Memory allocation failed");
+                printf("Memory allocation failed");
                 exit(EXIT_FAILURE);
             }
             *record[pointer] = *record[pointer - 1] * 2;
@@ -45,7 +45,7 @@ int calPoints(char **operations, int operationsSize) {
         {
             record[pointer] = malloc(sizeof(int));
             if (record[pointer] == NULL) {
-                perror("Memory allocation failed");
+                printf("Memory allocation failed");
                 exit(EXIT_FAILURE);
             }
             *record[pointer] = *record[pointer - 1] + *record[pointer - 2];
