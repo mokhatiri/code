@@ -96,6 +96,7 @@ void freeList(linkedList* self){
     for(int i = 0; i < self->length; i++){
         free(get(self, self->length-1-i));
     }
+    free(self);
 }
 
 // int main() {
