@@ -11,13 +11,14 @@ typedef struct node
 
 node* nodeCreate(int val){
     node* node = malloc(sizeof(node));
-    assert(node);
+    assert(node != NULL);
     node->value = val;
     node->next = NULL;
     return node;
 }
 
-void link(node* prev,node* next){
+void link(node* prev, node* next) {
+    assert(prev != NULL && next != NULL); // Check for NULL pointers
     prev->next = next;
 }
 
@@ -31,7 +32,7 @@ typedef struct linkedList
 
 linkedList* linkedListCreate(){
     linkedList* self = malloc(sizeof(linkedList));
-    assert(self);
+    assert(self!= NULL);
     self->length = 0;
     self->tail = nodeCreate(0);
     self->head = self->tail;
@@ -58,12 +59,20 @@ node* get(linkedList* self, int index){
     }
 }
 
-void delete(linkedList* self, int index){
-    if(index != 0){
-        node* prev = get(self,index-1);
-        prev->next = prev->next->next;
-    }else{
-        self->tail = self->tail->next;
+void delete(linkedList* self, int index) {
+    if (index != 0) {
+        node* prev = get(self, index - 1);
+        if (prev->next != NULL) {
+            node* temp = prev->next;
+            prev->next = temp->next;
+            free(temp);
+        }
+    } else {
+        if (self->tail->next != NULL) {
+            node* temp = self->tail->next;
+            self->tail->next = temp->next;
+            free(temp);
+        }
     }
     self->length--;
 }
@@ -92,9 +101,12 @@ void printA(linkedList* self){
     printf("]");
 }
 
-void freeList(linkedList* self){
-    for(int i = 0; i < self->length; i++){
-        free(get(self, self->length-1-i));
+void freeList(linkedList* self) {
+    node* current = self->tail->next;
+    while (current != NULL) {
+        node* temp = current;
+        current = current->next;
+        free(temp);
     }
     free(self);
 }
