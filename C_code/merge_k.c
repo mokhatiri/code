@@ -1,37 +1,47 @@
-/**
- * Definition for singly-linked list.
- * struct ListNode {
- *     int val;
- *     struct ListNode *next;
- * };
- */
+#include <stdio.h>
+#include <stdlib.h>
+#include <assert.h>
+
+typedef struct ListNode {
+  int val;
+  struct ListNode *next;
+};
+
 
 struct ListNode* mergeLists(struct ListNode* a, struct ListNode* b) {
-    struct ListNode* result_head = NULL;
-    struct ListNode** c = &result_head;
-    while (a && b){
-        if (a->val < b->val){
-            *c = a;
-            a = a->next;
-            c = &((*c)->next);
+    // merged is the return list (not a pointer)
+    // outPointer is the pointer changing merged
+    // ?inPointer is the pointer tracking the two lists nodes
+
+    struct ListNode mergedList; // we make a dummy list 
+    mergedList.next = NULL; // if both a and b are NULL, the return value would also be
+    
+    struct ListNode* outPointer = &mergedList;
+    struct ListNode* AinPointer = a;
+    struct ListNode* BinPointer = b;
+
+    while(AinPointer!=NULL && BinPointer!=NULL){
+        // the changes applique to the smallest
+        if(AinPointer->val < BinPointer->val){
+            // we point the out to the smallest
+            outPointer->next = AinPointer;
+            // we point to the next value to check it next
+            printf("A: %d\n",AinPointer->val);
+            AinPointer = AinPointer->next;
         }
-        else {
-            *c = b;
-            b = b->next;
-            c = &((*c)->next);
+
+        else{// same thing with B
+            outPointer->next = BinPointer;
+            printf("B: %d\n",BinPointer->val);
+            BinPointer = BinPointer->next;
         }
+        outPointer = outPointer->next;
     }
-    while (a){
-            *c = a;
-            a = a->next;
-            c = &((*c)->next);
-    }
-    while (b){
-            *c = b;
-            b = b->next;
-            c = &((*c)->next);
-        }
-    return result_head;
+
+    if(AinPointer!=NULL) outPointer->next = AinPointer;
+    if(BinPointer!=NULL) outPointer->next = BinPointer;
+
+    return mergedList.next;
 }
 
 struct ListNode* mergeKLists(struct ListNode** lists, int listsSize) {
@@ -39,8 +49,8 @@ struct ListNode* mergeKLists(struct ListNode** lists, int listsSize) {
     if (listsSize == 1) return lists[0];
 
 
-    struct ListNode* a = mergeKLists(lists, listsSize/2);
-    struct ListNode* b = mergeKLists(lists + (listsSize/2),listsSize - (listsSize/2));
+    struct ListNode* right = mergeKLists(lists, listsSize/2);
+    struct ListNode* left = mergeKLists(lists + (listsSize/2),listsSize - (listsSize/2));
     
-    return mergeLists(a, b);
+    return mergeLists(right, left);
 }
