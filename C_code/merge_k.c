@@ -1,29 +1,46 @@
-typedef struct ListNode {
-    int val;
-    struct ListNode *next;
-}; 
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     struct ListNode *next;
+ * };
+ */
 
-void insert(struct ListNode* list, int index, int value);
+struct ListNode* mergeLists(struct ListNode* a, struct ListNode* b) {
+    struct ListNode* result_head = NULL;
+    struct ListNode** c = &result_head;
+    while (a && b){
+        if (a->val < b->val){
+            *c = a;
+            a = a->next;
+            c = &((*c)->next);
+        }
+        else {
+            *c = b;
+            b = b->next;
+            c = &((*c)->next);
+        }
+    }
+    while (a){
+            *c = a;
+            a = a->next;
+            c = &((*c)->next);
+    }
+    while (b){
+            *c = b;
+            b = b->next;
+            c = &((*c)->next);
+        }
+    return result_head;
+}
 
 struct ListNode* mergeKLists(struct ListNode** lists, int listsSize) {
-    for(int i = 1; i< listsSize-1, i++){
+    if (listsSize == 0) return NULL;
+    if (listsSize == 1) return lists[0];
 
-        struct *ListNode init = lists[0];
-        int j = 0
-        struct *ListNode list = lists[i];
 
-        int k = 0;
-        while(init != NULL && list != NULL){
-            if(list->val > init->val){
-                insert(init,j,list->val);
-                list = list->next;
-                }
-            j++;
-        }
-        while(list != NULL){
-            insert(init,j,list->value);
-            j++;
-        }
-
-    }
+    struct ListNode* a = mergeKLists(lists, listsSize/2);
+    struct ListNode* b = mergeKLists(lists + (listsSize/2),listsSize - (listsSize/2));
+    
+    return mergeLists(a, b);
 }
