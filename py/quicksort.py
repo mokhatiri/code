@@ -1,3 +1,10 @@
+def quicksort(L, start, end):
+    if start < end:
+        # Partition the list and get the partitioning index.
+        partition_index = partition(L, start, end)
+        quicksort(L, start, partition_index)
+        quicksort(L, partition_index + 1,end)
+                  
 def find(L, k, start=0, end=-1):
     if end == -1:
         end = len(L) - 1
