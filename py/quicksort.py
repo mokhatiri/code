@@ -1,4 +1,5 @@
-def quicksort(L, start, end):
+def quicksort(L, start=0, end=-1):
+    if end == -1: end = len(L)-1
     if start < end:
         # Partition the list and get the partitioning index.
         partition_index = partition(L, start, end)
@@ -20,8 +21,7 @@ def find(L, k, start=0, end=-1):
             return find(L, k, start, pivot_index - 1)
 
 def partition(L, start, end):
-    pivot_index = (start + end) // 2
-    pivot = L[pivot_index]
+    pivot = L[(start + end) // 2]
 
     i = start
     j = end
@@ -35,13 +35,15 @@ def partition(L, start, end):
             L[i], L[j] = L[j], L[i]
             i += 1
             j -= 1
-
-    return i - 1
+    
+    return i-1
 
 def main():
-    L = [1,4,6,2,6,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,-1,-7,-10]
+    L = []
     k = 3
-    print(find(L, k))
+    print(L)
+    quicksort(L)
+    print(L)
 
 if __name__ == '__main__':
     main()
