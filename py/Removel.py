@@ -10,5 +10,7 @@ def removeval(nums, val):
     nums [:] = num_c[:]
 
 L= [1,1,2,4]
+
 removeval(L,1)
+
 print(L)
