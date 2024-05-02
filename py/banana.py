@@ -25,18 +25,32 @@
 # h =
 # 312884469
 # output = 2
+from math import ceil, floor
 
 def eating_bananas(piles, h):
-    min = 0
-    set = 0
-    for i in range(1,max(piles)+1):
-        test = 0
-        for j in piles:
-            for w in range(0,j,i):
-                test += 1
-        if min < test and test <= h: min = test; set = i
+    return findmin_(max(piles),floor(sum(piles)/h),piles,h)
 
-    return set
+def findmin_(max,min,pile,h):
+    if max <= min:
+        return max
+    if min == 0:
+        min = 1
+    mid_point = ceil((max+min)/2)
+    time = 0
+    max_time = 0
+    for value in pile:
+        time += ceil(value/mid_point)
+        max_time += ceil(value/min)
+
+    if time > h:
+        return findmin_(max,mid_point+1,pile,h)
+    
+    if max_time > h:
+        return findmin_(mid_point,min+1,pile,h)
+
+    if time == h or max_time <= h:
+        return min
+
 
 print(eating_bananas([3,6,7,11], 8))
 print(eating_bananas([30,11,23,4,20],5))

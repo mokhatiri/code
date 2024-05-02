@@ -12,7 +12,8 @@ class MinHeap:
         """Builds a heap from a given list of elements."""
         self.heap = arr[:]
         n = len(self.heap)
-        # Start from the last non-leaf node and heapify each node up to the root.
+        # Start from the last non-leaf node and heapify each node up to the root: the last non leaf node would be the one at the index n//2 - 1.
+        # remember we percolate down not up
         for i in range(n // 2 - 1, -1, -1):
             self._percolate_down(i)
 
@@ -28,6 +29,7 @@ class MinHeap:
     def _percolate_down(self, index):
 
         """Moves the node at index down to maintain the heap property."""
+        
         n = len(self.heap)
         smallest = index
         left = 2 * index + 1
