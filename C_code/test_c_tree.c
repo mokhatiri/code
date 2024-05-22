@@ -5,10 +5,10 @@ typedef struct node
     int value;
     struct node *next;
 } node;
-typedef struct linkedlist
+typedef struct 
 {
     node * head;
-} linkedlist;
+} likedList;
 
 node* create_from_list(int* list) {
     node* head = NULL;
@@ -26,7 +26,7 @@ node* create_from_list(int* list) {
     return head;
 }
 
-char* show_list(linkedlist* list) {
+char* show_list(likedList* list) {
     node* ptr = list->head;
     int len = 0;
     while (ptr != NULL) {
@@ -53,7 +53,7 @@ char* show_list(linkedlist* list) {
 
 int main() {
     int list[] = {72, 101, 108, 108, 111, 32, 87, 111, 114, 108, 100, 32, 33, -1};
-    linkedlist* l = malloc(sizeof(linkedlist));
+    likedList* l = malloc(sizeof(likedList));
     l->head = create_from_list(list);
     if (l->head != NULL) {
         printf("the head is %d\n", l->head->value);
