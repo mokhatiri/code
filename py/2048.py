@@ -1,3 +1,5 @@
+# still needs change
+
 from random import randint
 def next(GameState):
     move = None
@@ -73,9 +75,9 @@ def Move(state,j,key=0):
 
     if state[j][-1] == 0: state[j].pop(-1)
 
-    while len(state[j]) < init_len:
-        if key == 0: state[j].append(0)
-        else: state[j].insert(0,0)
+    while len(S := state[j]) < init_len:
+        if key == 0: S.append(0)
+        else: S.insert(0,0)
     
     return state
 
@@ -86,8 +88,7 @@ def GameOn():
                [0,0,0,0],
                [0,0,0,0]]
     
-    in_ = 0
-    while not in_:  
+    while not (in_ := 0):  
         
         a = randint(0,3)
         b = randint(0,3)
