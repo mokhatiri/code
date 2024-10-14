@@ -1,0 +1,51 @@
+body{
+    background-color: #000;
+    padding-left: 37%;
+    padding-top: 4%;
+    padding-bottom: 5%;
+    color: #fff;
+    position: fixed;
+    font-size: smaller;
+    font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+}
+#main{
+    background-color: #212121;
+    width: 40%;
+    padding:1%;
+    padding-top: 3%;
+    padding-bottom: 3%;
+    position: relative;
+    border-radius: 10px;
+}
+#info{
+    padding-top: 10%;
+}
+#info p{
+    margin: 5px;
+    font-size: small;
+}
+#info #name{    
+    font-size: 18px;
+}
+#address{
+    color: rgb(207, 223, 64);
+}
+img{
+    width: 25%;
+    height: 25%;
+    border-radius: 3px;
+}
+table{
+    text-align: center;
+}
+#h{
+    font-size: 12px;
+}
+td {
+    border-radius: 5px;
+    width: 500px;
+    height: 30px;
+    background-color: #353535;
+    font-size: medium;
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+}
