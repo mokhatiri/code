@@ -1,0 +1,177 @@
+body {
+    background-color: #d2d2d2; /*white turn: #d2d2d2 black turn: #282828 */
+}
+.title{
+    text-align: center;
+    color: #282828;
+    font-size: 30px;
+    font-family: 'Times New Roman', Times, serif;
+    font-weight: bold;
+    margin-top: 10px;
+}
+.chess img{
+    position: absolute;
+}
+.chess{
+    position: relative;
+    top: 80px;
+    width: 360px;
+    height: 360px;
+    margin: 0 auto;
+    border: 1px solid black;
+    border-radius: 10px;
+    box-shadow: 0 0 10px 10px rgba(0, 102, 255, 0.2);
+    overflow: hidden;
+}
+.chess #movesTo{
+    display: none;
+}
+.chess #movesTo div{
+    background-color: green;
+    opacity: 0;
+    position: absolute;
+}
+.chess .moves div{
+    opacity: 10%;
+    position: absolute;
+}
+.chess #board {
+    top:0;
+    left: 0;
+    width: 360px;
+    height: 360px;
+    filter: invert(30%);
+}
+.chess .pieces img{
+    height: 45px;
+    width: 45px;
+}
+#rdt1{
+    top: 0;
+    left: 0;
+}
+#ndt1{
+    top: 0;
+    left: 45px;
+}
+#bdt1{
+    top: 0;
+    left: 90px;
+}
+#qdt{
+    top: 0;
+    left: 135px;
+}
+#kdt{
+    top: 0;
+    left: 180px;
+}
+#bdt2{
+    top: 0;
+    left: 225px;
+}
+#ndt2{
+    top: 0;
+    left: 270px;
+}
+#rdt2{
+    top: 0;
+    left: 315px;
+}
+
+#rlt1{
+    top: 315px;
+    left: 0;
+}
+#nlt1{
+    top: 315px;
+    left: 45px;
+}
+#blt1{
+    top: 315px;
+    left: 90px;
+}
+#qlt{
+    top: 315px;
+    left: 135px;
+}
+#klt{
+    top: 315px;
+    left: 180px;
+}
+#blt2{
+    top: 315px;
+    left: 225px;
+}
+#nlt2{
+    top: 315px;
+    left: 270px;
+}
+#rlt2{
+    top: 315px;
+    left: 315px;
+}
+#pdt1{
+    top: 45px;
+    left: 0px;
+}
+#pdt2{
+    top: 45px;
+    left: 45px;
+}
+#pdt3{
+    top: 45px;
+    left: 90px;
+}
+#pdt4{
+    top: 45px;
+    left: 135px;
+}
+#pdt5{
+    top: 45px;
+    left: 180px;
+}
+#pdt6{
+    top: 45px;
+    left: 225px;
+}
+#pdt7{
+    top: 45px;
+    left: 270px;
+}
+#pdt8{
+    top: 45px;
+    left: 315px;
+}
+#plt1{
+    top: 270px;
+    left: 0px;
+}
+#plt2{
+    top: 270px;
+    left: 45px;
+}
+#plt3{
+    top: 270px;
+    left: 90px;
+}
+#plt4{
+    top: 270px;
+    left: 135px;
+}
+#plt5{
+    top: 270px;
+    left: 180px;
+}
+#plt6{
+    top: 270px;
+    left: 225px;
+}
+#plt7{
+    top: 270px;
+    left: 270px;
+}
+#plt8{
+    top: 270px;
+    left: 315px;
+}
