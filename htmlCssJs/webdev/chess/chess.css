@@ -18,12 +18,13 @@ body {
 }
 #title{
     text-align: center;
-    color: #282828;
-    font-size: 30px;
-    font-family: 'Times New Roman', Times, serif;
+    color: #0b0808;
+    font-size: 40px;
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
     font-weight: bold;
     margin-top: 10px;
 }
+
 #chess img{
     position: absolute;
 }
@@ -35,7 +36,7 @@ body {
     margin: 0 auto;
     border: 1px solid black;
     border-radius: 10px;
-    box-shadow: 0 0 10px 10px rgba(0, 102, 255, 0.2);
+    box-shadow: 0px 0px 10px 10px rgba(193, 135, 10, 0.566);
     overflow: hidden;
 }
 #chess #movesTo{
@@ -55,12 +56,22 @@ body {
     left: 0;
     width: 360px;
     height: 360px;
-    filter: invert(30%);
+    filter: invert(25%);
 }
 #chess .pieces img{
     height: 45px;
     width: 45px;
 }
+#rdt3 , #rdt4 , #rdt5 , #rdt6 , #rdt7 , #rdt8 {display: none}
+#ndt3 , #ndt4 , #ndt5 , #ndt6 , #ndt7 , #ndt8 {display: none}
+#bdt3 , #bdt4 , #bdt5 , #bdt6 , #bdt7 , #bdt8 {display: none}
+#qdt2 , #qdt3 , #qdt4 , #qdt5 , #qdt6 , #qdt7 , #qdt8 {display: none}
+
+#rlt3 , #rlt4 , #rlt5 , #rlt6 , #rlt7 , #rlt8 {display: none}
+#nlt3 , #nlt4 , #nlt5 , #nlt6 , #nlt7 , #nlt8 {display: none}
+#blt3 , #blt4 , #blt5 , #blt6 , #blt7 , #blt8 {display: none}
+#qlt2 , #qlt3 , #qlt4 , #qlt5 , #qlt6 , #qlt7 , #qlt8 {display: none}
+
 #rdt1{
     top: 0;
     left: 0;
@@ -73,7 +84,7 @@ body {
     top: 0;
     left: 90px;
 }
-#qdt{
+#qdt1{
     top: 0;
     left: 135px;
 }
@@ -106,7 +117,7 @@ body {
     top: 315px;
     left: 90px;
 }
-#qlt{
+#qlt1{
     top: 315px;
     left: 135px;
 }
