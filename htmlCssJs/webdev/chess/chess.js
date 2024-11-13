@@ -52,10 +52,11 @@ function possmoves(x, y) {
             }
         
             // Diagonal captures (one square diagonally)
-            if (isValidMove(x + direction, y - 1, isBlack) && pieces[x + direction][y - 1]) {
+            // and en passant
+            if (isValidMove(x + direction, y - 1, isBlack) && (pieces[x + direction][y - 1] || ( enpassant && enpassantCords[0] == x && enpassantCords[1] == y-1) )) {
                 possibleMoves.push([x + direction, y - 1]);
             }
-            if (isValidMove(x + direction, y + 1, isBlack) && pieces[x + direction][y + 1]) {
+            if (isValidMove(x + direction, y + 1, isBlack) && (pieces[x + direction][y + 1] || ( enpassant && enpassantCords[0] == x && enpassantCords[1] == y+1))) {
                 possibleMoves.push([x + direction, y + 1]);
             }
             break;
@@ -298,6 +299,9 @@ function possmoves(x, y) {
     
 let currentPiece;
 let currCords;
+let enpassant = false;
+let enpassantCords = [];
+
 let count = {
     white: {
         p: 8,
@@ -339,6 +343,13 @@ let moveTo = (x, y) => {
         let past = pieces[x][y];
         // need to check for the pawn promotion
 
+        if(currentPiece[0] == 'p' && x == enpassantCords[0] + (isBlackPiece(currentPiece) ? 1 : -1) && y == enpassantCords[1]) {
+            console.log("En passant captured");
+            enpassant = false;
+            past = pieces[enpassantCords[0]][enpassantCords[1]];
+            pieces[enpassantCords[0]][enpassantCords[1]] = 0;
+        }
+
         if (past) {
             if(past == ('k'+ (currentPiece[1] == 'd' ? 'l' : 'd') +'t')) {
                 const gameOver = document.getElementById("gameOver");
@@ -352,13 +363,13 @@ let moveTo = (x, y) => {
 
             count[currentPiece[1] == 'd' ? 'white' : 'black'][currentPiece[1]]--;
             
-            console.log("Piece captured: " + pieces[x][y]);
-            const capturedPiece = document.getElementById(pieces[x][y]);
+            console.log("Piece captured: " + past);
+            const capturedPiece = document.getElementById(past);
             if (capturedPiece) {
                 capturedPiece.style.display = "none";
             }
             else {
-                console.error("Element not found for " + pieces[x][y]);
+                console.error("Element not found for " + past);
             }
         }
 
@@ -386,6 +397,18 @@ let moveTo = (x, y) => {
     
         currentPiece = pieces[x][y];
         }
+        else if(currentPiece[0] == 'p' && x == currCords[0] -2) {
+            console.log("enpassant");
+            enpassant = true;
+            enpassantCords = [x, y];
+            pieces[x][y] = currentPiece;
+        }
+        else if(currentPiece[0] == 'p' && x == currCords[0] +2) {
+            console.log("enpassant");
+            enpassant = true;
+            enpassantCords = [x, y];
+            pieces[x][y] = currentPiece;
+        }            
         else{
             pieces[x][y] = currentPiece;
         }
