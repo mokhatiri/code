@@ -329,7 +329,7 @@ let exists = (x, y) => {
 
 let moveTo = (x, y) => {
     for (let a of possMoves) {
-        console.log("move : "+ a);
+        console.log("move to : "+ a);
         const moveSquare = document.getElementById("MT_" + a[0] + ',' + a[1]);
         if (moveSquare) {
             moveSquare.style.opacity = "0"; 
@@ -342,14 +342,14 @@ let moveTo = (x, y) => {
     if (exists(x,y)){
         let past = pieces[x][y];
         // need to check for the pawn promotion
-
-        if(currentPiece[0] == 'p' && x == enpassantCords[0] + (isBlackPiece(currentPiece) ? 1 : -1) && y == enpassantCords[1]) {
+        if(enpassant && currentPiece[0] == 'p' && (x == enpassantCords[0] - (currentPiece[1] == 'l' ? 1 : (-1))) && y == enpassantCords[1]) {
             console.log("En passant captured");
             enpassant = false;
             past = pieces[enpassantCords[0]][enpassantCords[1]];
             pieces[enpassantCords[0]][enpassantCords[1]] = 0;
         }
 
+        if (enpassant) enpassant = false;
         if (past) {
             if(past == ('k'+ (currentPiece[1] == 'd' ? 'l' : 'd') +'t')) {
                 const gameOver = document.getElementById("gameOver");
@@ -361,7 +361,7 @@ let moveTo = (x, y) => {
                 return;
             }
 
-            count[currentPiece[1] == 'd' ? 'white' : 'black'][currentPiece[1]]--;
+            count[past[1] == 'd' ? 'black' : 'white'][past[0]]--;
             
             console.log("Piece captured: " + past);
             const capturedPiece = document.getElementById(past);
@@ -375,9 +375,9 @@ let moveTo = (x, y) => {
 
         if (currentPiece[0] == 'p' && (x == 0 || x == 7)) {
             let next = prompt("Promote to: (q, r, b, n)");
-            pieces[x][y] = next + currentPiece[1] + 't' + count[currentPiece[1] == 'l' ? 'white' : 'black'][currentPiece[0]];
-            count[currentPiece[1] == 'l' ? 'white' : 'black'][currentPiece[1]]++;
-            
+            pieces[x][y] = next + currentPiece[1] + 't' + (++count[currentPiece[1] == 'l' ? 'white' : 'black'][next]);
+            count[currentPiece[1] == 'l' ? 'white' : 'black']['p']--;
+
             //make the pawn disappear
             const pawn = document.getElementById(currentPiece);
             if (pawn) {
@@ -454,10 +454,12 @@ let moveTo = (x, y) => {
 
     }
     else {
-        console.log("Invalid move");
+        console.log("Invalid move --> move:");
         move(x,y);
         return;
     }
+
+    console.log("count pawns white , black:" + count['white']['p'] + ', ' + count['black']['p']);
 }
       
 
