@@ -6,42 +6,42 @@
         <script src="chess.js"></script>
     </head>
     <body>
-        <div class = "title">CHESS</div>
-        <div class = "chess">
+        <div id = "title">CHESS</div>
+        <div id = "chess">
             <img src="./chess.avif" alt="board" id ="board">
             <div class = "pieces">
-                <img src="./Chess_bdt60.png"   id ="bdt1"> 
-                <img src="./Chess_bdt60.png"    id ="bdt2">
-                <img src="./Chess_rdt60.png"    id ="rdt1"> 
-                <img src="./Chess_rdt60.png"    id ="rdt2">
-                <img src="./Chess_ndt60.png"    id ="ndt1"> 
-                <img src="./Chess_ndt60.png"    id ="ndt2">
-                <img src="./Chess_qdt60.png"   id ="qdt"> 
-                <img src="./Chess_kdt60.png"   id ="kdt">
-                <img src="./Chess_blt60.png"    id ="blt1"> 
-                <img src="./Chess_blt60.png"    id ="blt2">
-                <img src="./Chess_rlt60.png"    id ="rlt1"> 
-                <img src="./Chess_rlt60.png"    id ="rlt2">
-                <img src="./Chess_nlt60.png"    id ="nlt1"> 
-                <img src="./Chess_nlt60.png"    id ="nlt2">
-                <img src="./Chess_qlt60.png"   id ="qlt"> 
-                <img src="./Chess_klt60.png"   id ="klt">
-                <img src="./Chess_pdt60.png"    id ="pdt1">
-                <img src="./Chess_pdt60.png"    id ="pdt2">
-                <img src="./Chess_pdt60.png"    id ="pdt3">
-                <img src="./Chess_pdt60.png"    id ="pdt4">
-                <img src="./Chess_pdt60.png"    id ="pdt5">
-                <img src="./Chess_pdt60.png"    id ="pdt6">
-                <img src="./Chess_pdt60.png"    id ="pdt7">
-                <img src="./Chess_pdt60.png"    id ="pdt8">
-                <img src="./Chess_plt60.png"    id ="plt1">
-                <img src="./Chess_plt60.png"    id ="plt2">
-                <img src="./Chess_plt60.png"    id ="plt3">
-                <img src="./Chess_plt60.png"    id ="plt4">
-                <img src="./Chess_plt60.png"    id ="plt5">
-                <img src="./Chess_plt60.png"    id ="plt6">
-                <img src="./Chess_plt60.png"    id ="plt7">
-                <img src="./Chess_plt60.png"    id ="plt8"> 
+                <img src="./Chess_bdt60.png"  class = "imgs" id ="bdt1"> 
+                <img src="./Chess_bdt60.png"  class = "imgs"  id ="bdt2">
+                <img src="./Chess_rdt60.png"  class = "imgs"  id ="rdt1"> 
+                <img src="./Chess_rdt60.png"  class = "imgs"  id ="rdt2">
+                <img src="./Chess_ndt60.png"  class = "imgs"  id ="ndt1"> 
+                <img src="./Chess_ndt60.png"  class = "imgs"  id ="ndt2">
+                <img src="./Chess_qdt60.png"  class = "imgs" id ="qdt"> 
+                <img src="./Chess_kdt60.png"  class = "imgs" id ="kdt">
+                <img src="./Chess_blt60.png"  class = "imgs"  id ="blt1"> 
+                <img src="./Chess_blt60.png"  class = "imgs"  id ="blt2">
+                <img src="./Chess_rlt60.png"  class = "imgs"  id ="rlt1"> 
+                <img src="./Chess_rlt60.png"  class = "imgs"  id ="rlt2">
+                <img src="./Chess_nlt60.png"  class = "imgs"  id ="nlt1"> 
+                <img src="./Chess_nlt60.png"  class = "imgs"  id ="nlt2">
+                <img src="./Chess_qlt60.png"  class = "imgs" id ="qlt"> 
+                <img src="./Chess_klt60.png"  class = "imgs" id ="klt">
+                <img src="./Chess_pdt60.png"  class = "imgs"  id ="pdt1">
+                <img src="./Chess_pdt60.png"  class = "imgs"  id ="pdt2">
+                <img src="./Chess_pdt60.png"  class = "imgs"  id ="pdt3">
+                <img src="./Chess_pdt60.png"  class = "imgs"  id ="pdt4">
+                <img src="./Chess_pdt60.png"  class = "imgs"  id ="pdt5">
+                <img src="./Chess_pdt60.png"  class = "imgs"  id ="pdt6">
+                <img src="./Chess_pdt60.png"  class = "imgs"  id ="pdt7">
+                <img src="./Chess_pdt60.png"  class = "imgs"  id ="pdt8">
+                <img src="./Chess_plt60.png"  class = "imgs"  id ="plt1">
+                <img src="./Chess_plt60.png"  class = "imgs"  id ="plt2">
+                <img src="./Chess_plt60.png"  class = "imgs"  id ="plt3">
+                <img src="./Chess_plt60.png"  class = "imgs"  id ="plt4">
+                <img src="./Chess_plt60.png"  class = "imgs"  id ="plt5">
+                <img src="./Chess_plt60.png"  class = "imgs"  id ="plt6">
+                <img src="./Chess_plt60.png"  class = "imgs"  id ="plt7">
+                <img src="./Chess_plt60.png"  class = "imgs"  id ="plt8"> 
             </div>
             <div class = "moves">
                 <div style = "left: 0px; top: 0px; width: 45px; height: 45px;"     onclick="move(0,0)"></div>
@@ -176,5 +176,7 @@
                 <div style = "left: 315px; top: 315px; width: 45px; height: 45px;" id = "MT_7,7" onclick="moveTo(7,7)"></div>
             </div>
         </div>
+        <div id = "gameOver">Game Over</div>
+
     </body>
 </html>

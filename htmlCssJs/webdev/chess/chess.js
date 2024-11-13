@@ -38,9 +38,20 @@ function possmoves(x, y) {
     switch (type) {
         case 'p': // Pawn
             const direction = isBlack ? 1 : -1;
+            const startRow = isBlack ? 1 : 6; // Black pawns start at x = 1, white pawns start at x = 6
+        
+            // Normal one-square forward move
             if (isValidMove(x + direction, y, isBlack) && !pieces[x + direction][y]) {
                 possibleMoves.push([x + direction, y]);
             }
+        
+            // Two-square forward move (only on the first move)
+            if (x === startRow && !pieces[x + direction][y] && !pieces[x + (2 * direction)][y]) {
+                console.log("Two-square forward move.");
+                possibleMoves.push([x + (2 * direction), y]);
+            }
+        
+            // Diagonal captures (one square diagonally)
             if (isValidMove(x + direction, y - 1, isBlack) && pieces[x + direction][y - 1]) {
                 possibleMoves.push([x + direction, y - 1]);
             }
@@ -48,6 +59,7 @@ function possmoves(x, y) {
                 possibleMoves.push([x + direction, y + 1]);
             }
             break;
+    
 
         case 'r': // Rook
             for (let i = x + 1; i < 8 && isValidMove(i, y, isBlack); i++) {
@@ -285,6 +297,7 @@ function possmoves(x, y) {
 }
     
 let currentPiece;
+let currCords;
 let possMoves = [];
 let turn = 0; // 0 = white, 1 = black
 
@@ -306,7 +319,67 @@ let moveTo = (x, y) => {
         }
     }
 
-    if (exists(x,y)){}
+    if (exists(x,y)){
+        const img = document.getElementById(currentPiece);
+        if (img) {  // Make sure the img element is found
+            img.style.filter = "invert(0%)";
+            img.style.top = (x * 45) + "px";
+            img.style.left = (y * 45) + "px";
+        }
+        else {
+            console.error("Element not found for " + currentPiece);
+        }
+
+        let past = pieces[x][y];
+        if (past) {
+            if(past == ('k'+ (currentPiece[1] == 'd' ? 'l' : 'd') +'t')) {
+                const gameOver = document.getElementById("gameOver");
+                if (gameOver) {  // Make sure the gameOver element is found
+                    gameOver.style.display = "block";
+                }else {
+                    console.error("Element not found for gameOver");
+                }
+                return;
+            }
+            console.log("Piece captured: " + pieces[x][y]);
+            const capturedPiece = document.getElementById(pieces[x][y]);
+            if (capturedPiece) {
+                capturedPiece.style.display = "none";
+            }
+            else {
+                console.error("Element not found for " + pieces[x][y]);
+            }
+        }
+        pieces[x][y] = currentPiece;
+        pieces[currCords[0]][currCords[1]] = 0;
+
+        const movesto = document.getElementById("movesTo");
+        if (movesto) {  // Make sure the movesto element is found
+            movesto.style.display = "none";
+        }else {
+            console.error("Element not found for movesTo");
+        }
+
+        turn = (turn == 0 ? 1 : 0);
+        if(turn == 0) {
+            document.body.style.backgroundColor = "#d2d2d2";
+            document.getElementById("title").style.color = "#282828";
+            document.getElementById("chess").style = " transform: rotate(0deg); transform-origin: center;";
+            const images = document.querySelectorAll(".imgs");
+            images.forEach(img => {
+                img.style.transform = "rotate(0deg)";  // Counter-rotate the images to face up
+            });
+        }
+        else {
+            document.body.style.backgroundColor = "#282828";
+            document.getElementById("title").style.color = "#d2d2d2";
+            document.getElementById("chess").style = " transform: rotate(180deg); transform-origin: center;";
+            const images = document.querySelectorAll(".imgs");
+            images.forEach(img => {
+                img.style.transform = "rotate(180deg)";  // Counter-rotate the images to face up
+            });
+        }
+    }
     else {
         console.log("Invalid move");
         move(x,y);
@@ -343,7 +416,6 @@ let move = (x, y) => {
     }
 
     let current = pieces[x][y];
-    console.log("success: " + current);
     if (current == 0) return;
     if (current[1] == 'd' && turn == 0 || current[1] == 'l' && turn == 1){
         console.log("not your turn");
@@ -351,6 +423,7 @@ let move = (x, y) => {
     }
 
     currentPiece = current;
+    currCords = [x, y];
     showmove(x,y);
     // show possible moves for the current piece by changing the color of the squares to green with opacity 0.7
     // set the .chess .movesto style = "diplay: block"
@@ -364,7 +437,6 @@ let showmove = (x, y) => {
     possMoves = possmoves(x, y);
 
     for (let a of possMoves) {
-        console.log("move : "+ a);
         const moveSquare = document.getElementById("MT_" + a[0] + ',' + a[1]);
         if (moveSquare) {
             moveSquare.style.opacity = "0.3"; 
@@ -381,6 +453,4 @@ let showmove = (x, y) => {
     }else {
         console.error("Element not found for movesTo");
     }
-
-    console.log(possMoves);
 }
