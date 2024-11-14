@@ -23,7 +23,406 @@ function isValidMove(x, y, isBlack) {
     );
 }
 
+function isCheckAll(isBlack) {
+
+    let check = false;
+
+    // suppose we move x1,y1 to x,y
+    let otherPieces = [];
+    for (let i = 0; i < pieces.length; i++) {
+        for (let j = 0; j < pieces[i].length; j++) {
+            if (pieces[i][j] && pieces[i][j][1] === (isBlack ? 'l' : 'd')) {
+                console.log("here we check for the check possiblity of", pieces[i][j]);
+                console.log(pieces[i][j]);
+                // Check each move of the opposing pieces to see if they can take the king.
+                let possibleMoves = Allpossmoves(i, j);
+                for (let move of possibleMoves) {
+                    if (isGameOver(pieces[move[0]][move[1]])) {
+                        check = true;
+                        break;
+                    }
+                }
+            }
+            if (check) break;
+        }
+        if (check) break;
+    }
+
+    console.log("check is", check);
+    return check;
+}
+
+function isCheck(x, y, x1, y1) {
+    // suppose we move x1,y1 to x,y
+
+    if (pieces[x1][y1] == 0) return false // just in case
+
+    // Save the initial pieces at the source and target positions
+    let pastTarget = pieces[x][y];
+    let pastSource = pieces[x1][y1];
+
+    // Move the piece to the new position
+    pieces[x][y] = pieces[x1][y1];
+    pieces[x1][y1] = 0;
+
+    // Determine if the moved piece is black
+    let isBlack = isBlackPiece(pieces[x][y]);
+    let check = false;
+
+    // Find all pieces of the opposing player
+    let otherPieces = [];
+    for (let i = 0; i < pieces.length; i++) {
+        for (let j = 0; j < pieces[i].length; j++) {
+            if (pieces[i][j] && pieces[i][j][1] === (isBlack ? 'l' : 'd')) {
+
+                console.log("here we check for the check possiblity of", pieces[i][j]);
+                console.log(pieces[i][j]);
+                // Check each move of the opposing pieces to see if they can take the king.
+                let possibleMoves = Allpossmoves(i, j);
+                for (let move of possibleMoves) {
+                    if (isGameOver(pieces[move[0]][move[1]])) {
+                        console.log("check by", pieces[move[0]][move[1]]);
+                        check = true;
+                        break;
+                    }
+                }
+            }
+            if (check) break;
+        }
+        if (check) break;
+    }
+
+    console.log("check is", check);
+    // Restore the pieces to their original positions
+    pieces[x][y] = pastTarget;
+    pieces[x1][y1] = pastSource;
+
+    return check;
+}
+
+function isCheckMate() {
+    // Determine if the moved piece is black
+    let isBlack = turn;
+
+    // Find all pieces of the opposing player
+    // Check if there's any move by the opposing player that is not a check
+    for (let i = 0; i < pieces.length; i++) {
+        for (let j = 0; j < pieces[i].length; j++) {
+            if (pieces[i][j] && pieces[i][j][1] == (isBlack ? 'l' : 'd')) {
+                let possibleMoves = Allpossmoves(i, j);
+                for (let move of possibleMoves) {
+                    if (!isCheck(move[0], move[1], i, j)) {
+                        return false;
+                    }
+                }
+            }
+        }
+    }
+
+    return true;
+};
+
+function isStaleMate() {
+    
+    // Check if there's any move by the opposing player that is not a check
+    // Determine if the moved piece is black
+    let isBlack = turn;
+
+    for (let i = 0; i < pieces.length; i++) {
+        for (let j = 0; j < pieces[i].length; j++) {
+            if (pieces[i][j] && pieces[i][j][1] == (isBlack ? 'l' : 'd')) {
+                let possibleMoves = Allpossmoves(i, j);
+                if (possibleMoves.length > 0) {
+                    return false
+                }
+            }
+        }
+    }
+
+    return true;
+}
+
+function isGameOver(past) {
+    // Check if the piece is a king based on naming convention
+    return past && past[0] === 'k';
+};
+
 function possmoves(x, y) {
+    const piece = pieces[x][y];
+    if (!piece) {
+        console.log("No piece at this position.");
+        return [];
+    }
+
+    const possibleMoves = [];
+    const type = piece[0];
+    const isBlack = isBlackPiece(piece);
+
+    // Define move logic based on piece type
+    switch (type) {
+        case 'p': // Pawn
+            const direction = isBlack ? 1 : -1;
+            const startRow = isBlack ? 1 : 6; // Black pawns start at x = 1, white pawns start at x = 6
+
+            // Normal one-square forward move
+            if (isValidMove(x + direction, y, isBlack) && !pieces[x + direction][y]) {
+                if(!isCheck(x+direction,y,x,y)) possibleMoves.push([x + direction, y]);
+            }
+        
+            // Two-square forward move (only on the first move)
+            if (x === startRow && !pieces[x + direction][y] && !pieces[x + (2 * direction)][y]) {
+                console.log("Two-square forward move.");
+                if(!isCheck(x + (2* direction),y,x,y)) possibleMoves.push([x + (2 * direction), y]);
+            }
+        
+            // Diagonal captures (one square diagonally)
+            // and en passant
+            if (isValidMove(x + direction, y - 1, isBlack) && (pieces[x + direction][y - 1] || ( enpassant && enpassantCords[0] == x && enpassantCords[1] == y-1) )) {
+                if(!isCheck(x + direction,y-1,x,y)) possibleMoves.push([x + direction, y - 1]);
+            }
+            if (isValidMove(x + direction, y + 1, isBlack) && (pieces[x + direction][y + 1] || ( enpassant && enpassantCords[0] == x && enpassantCords[1] == y+1))) {
+                if(!isCheck(x+direction,y+1,x,y)) possibleMoves.push([x + direction, y + 1]);
+            }
+            break;
+    
+
+        case 'r': // Rook
+            for (let i = x + 1; i < 8 && isValidMove(i, y, isBlack); i++) {
+                if(!isCheck(i,y,x,y)) possibleMoves.push([i, y]);
+                if (pieces[i][y]) break;
+            }
+            for (let i = x - 1; i >= 0 && isValidMove(i, y, isBlack); i--) {
+                if(!isCheck(i,y,x,y)) possibleMoves.push([i, y]);
+                if (pieces[i][y]) break;
+            }
+            for (let j = y + 1; j < 8 && isValidMove(x, j, isBlack); j++) {
+                if(!isCheck(x,j,x,y)) possibleMoves.push([x, j]);
+                if (pieces[x][j]) break;
+            }
+            for (let j = y - 1; j >= 0 && isValidMove(x, j, isBlack); j--) {
+                if(!isCheck(x,j,x,y)) possibleMoves.push([x, j]);
+                if (pieces[x][j]) break;
+            }
+            break;
+
+        case 'n': // Knight
+            const knightMoves = [
+                [x + 2, y + 1], [x + 2, y - 1], [x - 2, y + 1], [x - 2, y - 1],
+                [x + 1, y + 2], [x + 1, y - 2], [x - 1, y + 2], [x - 1, y - 2]
+            ];
+            knightMoves.forEach(([i, j]) => {
+                if (isValidMove(i, j, isBlack)) {
+                    if(!isCheck(i,j,x,y)) possibleMoves.push([i, j]);
+                }
+            });
+            break;
+
+            case 'b': // Bishop
+            // Top-right diagonal
+            for (let i = 1; i < 8; i++) {
+                if (x + i < 8 && y + i < 8) { // Check bounds
+                    if (isValidMove(x + i, y + i, isBlack)) {
+                        if(!isCheck(x+i,y+i,x,y)) possibleMoves.push([x + i, y + i]);
+                        if (pieces[x + i][y + i]) {
+                            // Stop if the piece is present. If it's an opponent piece, it's captured.
+                            if (isBlackPiece(pieces[x + i][y + i]) !== isBlack) {
+                                break; // Capture the piece, stop moving in this direction
+                            }
+                            break; // Stop if same color piece (can't capture)
+                        }
+                    } else {
+                        break; // Stop if the move is invalid
+                    }
+                } else {
+                    break; // Stop if out of bounds
+                }
+            }
+        
+            // Bottom-left diagonal
+            for (let i = 1; i < 8; i++) {
+                if (x - i >= 0 && y - i >= 0) { // Check bounds
+                    if (isValidMove(x - i, y - i, isBlack)) {
+                        if(!isCheck(x-i,y-i,x,y)) possibleMoves.push([x - i, y - i]);
+                        if (pieces[x - i][y - i]) {
+                            // Stop if the piece is present. If it's an opponent piece, it's captured.
+                            if (isBlackPiece(pieces[x - i][y - i]) !== isBlack) {
+                                break; // Capture the piece, stop moving in this direction
+                            }
+                            break; // Stop if same color piece (can't capture)
+                        }
+                    } else {
+                        break; // Stop if the move is invalid
+                    }
+                } else {
+                    break; // Stop if out of bounds
+                }
+            }
+        
+            // Bottom-right diagonal
+            for (let i = 1; i < 8; i++) {
+                if (x + i < 8 && y - i >= 0) { // Check bounds
+                    if (isValidMove(x + i, y - i, isBlack)) {
+                        if(!isCheck(x+i,y-i,x,y)) possibleMoves.push([x + i, y - i]);
+                        if (pieces[x + i][y - i]) {
+                            // Stop if the piece is present. If it's an opponent piece, it's captured.
+                            if (isBlackPiece(pieces[x + i][y - i]) !== isBlack) {
+                                break; // Capture the piece, stop moving in this direction
+                            }
+                            break; // Stop if same color piece (can't capture)
+                        }
+                    } else {
+                        break; // Stop if the move is invalid
+                    }
+                } else {
+                    break; // Stop if out of bounds
+                }
+            }
+        
+            // Top-left diagonal
+            for (let i = 1; i < 8; i++) {
+                if (x - i >= 0 && y + i < 8) { // Check bounds
+                    if (isValidMove(x - i, y + i, isBlack)) {
+                        if(!isCheck(x-i,y+i,x,y)) possibleMoves.push([x - i, y + i]);
+                        if (pieces[x - i][y + i]) {
+                            // Stop if the piece is present. If it's an opponent piece, it's captured.
+                            if (isBlackPiece(pieces[x - i][y + i]) !== isBlack) {
+                                break; // Capture the piece, stop moving in this direction
+                            }
+                            break; // Stop if same color piece (can't capture)
+                        }
+                    } else {
+                        break; // Stop if the move is invalid
+                    }
+                } else {
+                    break; // Stop if out of bounds
+                }
+            }
+            break;
+        
+
+        case 'q': // Queen
+
+            // Rook moves (horizontal and vertical)
+            for (let i = x + 1; i < 8 && isValidMove(i, y, isBlack); i++) {
+                if(!isCheck(i,y,x,y)) possibleMoves.push([i, y]);
+                if (pieces[i][y]) break;
+            }
+            for (let i = x - 1; i >= 0 && isValidMove(i, y, isBlack); i--) {
+                if(!isCheck(i,y,x,y)) possibleMoves.push([i, y]);
+                if (pieces[i][y]) break;
+            }
+            for (let j = y + 1; j < 8 && isValidMove(x, j, isBlack); j++) {
+                if(!isCheck(x,j,x,y)) possibleMoves.push([x, j]);
+                if (pieces[x][j]) break;
+            }
+            for (let j = y - 1; j >= 0 && isValidMove(x, j, isBlack); j--) {
+                if(!isCheck(x,j,x,y)) possibleMoves.push([x, j]);
+                if (pieces[x][j]) break;
+            }
+
+            // Top-right diagonal
+            for (let i = 1; i < 8; i++) {
+                if (x + i < 8 && y + i < 8) { // Check bounds
+                    if (isValidMove(x + i, y + i, isBlack)) {
+                        if(!isCheck(x+i,y+i,x,y)) possibleMoves.push([x + i, y + i]);
+                        if (pieces[x + i][y + i]) {
+                            // Stop if the piece is present. If it's an opponent piece, it's captured.
+                            if (isBlackPiece(pieces[x + i][y + i]) !== isBlack) {
+                                break; // Capture the piece, stop moving in this direction
+                            }
+                            break; // Stop if same color piece (can't capture)
+                        }
+                    } else {
+                        break; // Stop if the move is invalid
+                    }
+                } else {
+                    break; // Stop if out of bounds
+                }
+            }
+
+            // Bottom-left diagonal
+            for (let i = 1; i < 8; i++) {
+                if (x - i >= 0 && y - i >= 0) { // Check bounds
+                    if (isValidMove(x - i, y - i, isBlack)) {
+                        if(!isCheck(x-i,y-i,x,y)) possibleMoves.push([x - i, y - i]);
+                        if (pieces[x - i][y - i]) {
+                            // Stop if the piece is present. If it's an opponent piece, it's captured.
+                            if (isBlackPiece(pieces[x - i][y - i]) !== isBlack) {
+                                break; // Capture the piece, stop moving in this direction
+                            }
+                            break; // Stop if same color piece (can't capture)
+                        }
+                    } else {
+                        break; // Stop if the move is invalid
+                    }
+                } else {
+                    break; // Stop if out of bounds
+                }
+            }
+
+            // Bottom-right diagonal
+            for (let i = 1; i < 8; i++) {
+                if (x + i < 8 && y - i >= 0) { // Check bounds
+                    if (isValidMove(x + i, y - i, isBlack)) {
+                        if(!isCheck(x+i,y-i,x,y)) possibleMoves.push([x + i, y - i]);
+                        if (pieces[x + i][y - i]) {
+                            // Stop if the piece is present. If it's an opponent piece, it's captured.
+                            if (isBlackPiece(pieces[x + i][y - i]) !== isBlack) {
+                                break; // Capture the piece, stop moving in this direction
+                            }
+                            break; // Stop if same color piece (can't capture)
+                        }
+                    } else {
+                        break; // Stop if the move is invalid
+                    }
+                } else {
+                    break; // Stop if out of bounds
+                }
+            }
+
+            // Top-left diagonal
+            for (let i = 1; i < 8; i++) {
+                if (x - i >= 0 && y + i < 8) { // Check bounds
+                    if (isValidMove(x - i, y + i, isBlack)) {
+                        if(!isCheck(x-i,y+i,x,y))possibleMoves.push([x - i, y + i]);
+                        if (pieces[x - i][y + i]) {
+                            // Stop if the piece is present. If it's an opponent piece, it's captured.
+                            if (isBlackPiece(pieces[x - i][y + i]) !== isBlack) {
+                                break; // Capture the piece, stop moving in this direction
+                            }
+                            break; // Stop if same color piece (can't capture)
+                        }
+                    } else {
+                        break; // Stop if the move is invalid
+                    }
+                } else {
+                    break; // Stop if out of bounds
+                }
+            }
+            break;
+
+
+        case 'k': // King
+            const kingMoves = [
+                [x + 1, y], [x - 1, y], [x, y + 1], [x, y - 1],
+                [x + 1, y + 1], [x - 1, y - 1], [x + 1, y - 1], [x - 1, y + 1]
+            ];
+            kingMoves.forEach(([i, j]) => {
+                if (isValidMove(i, j, isBlack)) {
+                    if(!isCheck(i,j,x,y)) possibleMoves.push([i, j]);
+                }
+            });
+            break;
+
+        default:
+            console.log("Piece type not recognized.");
+    }
+
+    console.log("Possible moves:", possibleMoves);
+    return possibleMoves;
+};
+ 
+function Allpossmoves(x, y) {
     const piece = pieces[x][y];
     if (!piece) {
         console.log("No piece at this position.");
@@ -294,12 +693,16 @@ function possmoves(x, y) {
             console.log("Piece type not recognized.");
     }
 
+    console.log("All Possible moves for " + piece + " at (" + x + ", " + y + "): " + possibleMoves);
+
     return possibleMoves;
-}
-    
+};
+
+
 let currentPiece;
 let currCords;
 let enpassant = false;
+let incheck  = false;
 let enpassantCords = [];
 
 let count = {
@@ -318,16 +721,20 @@ let count = {
         q: 1
     }
 };
+
+
 let possMoves = [];
 let turn = 0; // 0 = white, 1 = black
 
 let exists = (x, y) => {
     return possMoves.some(
         (move) => move[0] === x && move[1] === y
-      );    
+    );    
 }
 
 let moveTo = (x, y) => {
+
+    // fix the color of the spaces graphics
     for (let a of possMoves) {
         console.log("move to : "+ a);
         const moveSquare = document.getElementById("MT_" + a[0] + ',' + a[1]);
@@ -339,7 +746,9 @@ let moveTo = (x, y) => {
         }
     }
 
+    // move the piece is it is valid
     if (exists(x,y)){
+
         let past = pieces[x][y];
         // need to check for the pawn promotion
         if(enpassant && currentPiece[0] == 'p' && (x == enpassantCords[0] - (currentPiece[1] == 'l' ? 1 : (-1))) && y == enpassantCords[1]) {
@@ -351,18 +760,8 @@ let moveTo = (x, y) => {
 
         if (enpassant) enpassant = false;
         if (past) {
-            if(past == ('k'+ (currentPiece[1] == 'd' ? 'l' : 'd') +'t')) {
-                const gameOver = document.getElementById("gameOver");
-                if (gameOver) {  // Make sure the gameOver element is found
-                    gameOver.style.display = "block";
-                }else {
-                    console.error("Element not found for gameOver");
-                }
-                return;
-            }
-
             count[past[1] == 'd' ? 'black' : 'white'][past[0]]--;
-            
+
             console.log("Piece captured: " + past);
             const capturedPiece = document.getElementById(past);
             if (capturedPiece) {
@@ -378,7 +777,7 @@ let moveTo = (x, y) => {
             pieces[x][y] = next + currentPiece[1] + 't' + (++count[currentPiece[1] == 'l' ? 'white' : 'black'][next]);
             count[currentPiece[1] == 'l' ? 'white' : 'black']['p']--;
 
-            //make the pawn disappear
+            //make the pawn disappear graphically
             const pawn = document.getElementById(currentPiece);
             if (pawn) {
                 pawn.style.display = "none";
@@ -415,6 +814,8 @@ let moveTo = (x, y) => {
 
         pieces[currCords[0]][currCords[1]] = 0;
 
+        //graphic side
+
         const img = document.getElementById(currentPiece);
         if (img) {  // Make sure the img element is found
             img.style.filter = "invert(0%)";
@@ -431,6 +832,49 @@ let moveTo = (x, y) => {
         }else {
             console.error("Element not found for movesTo");
         }
+
+        // check for checkmate
+        if(isCheckMate()) {
+            document.getElementById(('k'+ (currentPiece[1] == 'd' ? 'l': 'd' )+'t')).style.filter = "drop-shadow(0px 0px 22px #ff0000)";
+            const gameOver = document.getElementById("gameOver");
+            if (gameOver) {  // Make sure the gameOver element is found
+                gameOver.style.display = "block";
+            }else {
+                console.error("Element not found for gameOver");
+            }
+            return;
+        }
+
+        // check for stalemate
+        if(isStaleMate()) {
+            const stale = document.getElementById("Stalemate");
+            if (stale) {  // Make sure the gameOver element is found
+                stale.style.display = "block";
+            }else {
+                console.error("Element not found for Stalemate");
+            }
+            return;
+        }
+    
+
+        // check for check
+        if(isCheckAll(1)) {
+            console.log("Check!");
+            document.getElementById(('kdt')).style.filter = "drop-shadow(0px 0px 22px #ff0000)";
+        }
+        else {
+            document.getElementById(('kdt')).style.filter = "drop-shadow(0px 0px 0px #000000)";
+        }
+
+        if(isCheckAll(0)) {
+            console.log("Check!");
+            document.getElementById(('klt')).style.filter = "drop-shadow(0px 0px 22px #ff0000)";
+        }
+        else {
+            document.getElementById(('klt')).style.filter = "drop-shadow(0px 0px 0px #000000)";
+        }
+
+        // background color for turn change
 
         turn = (turn == 0 ? 1 : 0);
         if(turn == 0) {
@@ -460,8 +904,7 @@ let moveTo = (x, y) => {
     }
 
     console.log("count pawns white , black:" + count['white']['p'] + ', ' + count['black']['p']);
-}
-      
+}   
 
 let move = (x, y) => {
     // make the past move disappear
@@ -500,6 +943,7 @@ let move = (x, y) => {
     currentPiece = current;
     currCords = [x, y];
     showmove(x,y);
+
     // show possible moves for the current piece by changing the color of the squares to green with opacity 0.7
     // set the .chess .movesto style = "diplay: block"
     // set the style of the img with id current piece to style = "filter: invert(45%)"
@@ -510,6 +954,8 @@ let showmove = (x, y) => {
     img.style.filter = "invert(45%)"; // Ensure currentPiece is a valid ID string
 
     possMoves = possmoves(x, y);
+
+    console.log("possMoves: " + possMoves);
 
     for (let a of possMoves) {
         const moveSquare = document.getElementById("MT_" + a[0] + ',' + a[1]);
@@ -528,4 +974,4 @@ let showmove = (x, y) => {
     }else {
         console.error("Element not found for movesTo");
     }
-}
+};
