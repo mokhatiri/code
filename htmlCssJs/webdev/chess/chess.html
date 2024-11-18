@@ -3,7 +3,7 @@
     <head>
         <title>Chess</title>
         <link rel="stylesheet" href="chess.css">
-        <script src="chess.js"></script>
+        <script src="chess2.js"></script>
     </head>
     <body>
         <div id = "title">CHESS</div>
@@ -238,5 +238,13 @@
         </div>
         <div id = "gameOver">Game Over</div>
         <div id = "Stalemate">Stalemate</div>
+        
+        <div id = "mode"> 
+            <div class = "modeButton" id = "Mode" onclick="changeMode()" >2 players</div>
+            <div class = "modeButton" onclick="restart()" >Restart</div>
+        </div>
+        <div class="player-bar">
+            <div class="bar-fill"></div>
+        </div>        
     </body>
 </html>
