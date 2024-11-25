@@ -1,0 +1,42 @@
+body{
+    background-color: #000000;
+}
+h1{
+    color: #ffffff;
+    text-align: center;
+}
+#map{
+    position: absolute;
+    top: 10%;
+    left: 30%;
+    width: 40%;
+    background-color: invisible;
+    border: 1px solid #ff0000;
+}
+#mapBack{
+    position: absolute;
+    top: 10%;
+    left: 30%;
+    width: 40%;
+    background-color: #ffffff;
+    border: 1px solid;
+}
+
+#Choice{
+    position: absolute;
+    width: 80%;
+    left: 10%;
+    display: none;
+    justify-content: space-between;
+    padding: 10px 10px;
+    background: linear-gradient(90deg, #0000007a 0%,  transparent 50%, #0000007a 100%) 0.5px 0, linear-gradient(0deg, #505050 0%, #b4b4b442 50%, #505050d4 100%);
+    height: 7%;
+    border-radius: 10px;
+    border-color: #29225f;
+    border-width: 2px;
+}
+
+#Choice button{
+    width: 20%;
+    border-radius: 5px;
+}

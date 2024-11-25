@@ -721,7 +721,7 @@ function isEnPassant(x,y,x1,y1){
 };
 
 // this will notice the player about the promotion and determines the piece to turn to
-function  promotionNotice(){
+function promotionNotice(){
     return  prompt("what piece do you want to promote to? (q,r,b,n)");
 };
 
@@ -1113,7 +1113,7 @@ the score is max for white and min for black
 // AI variables
 let AI = false;
 let AI_COLOR = 0;
-let AI_DEPTH = 4;
+let AI_DEPTH = 3;
 
 // AI functions
 
@@ -1483,20 +1483,4 @@ function evaluate() {
     }
 
     return score;
-};
-
-// Helper function to get the value of a piece
-function getPieceValue(piece) {
-    const pieceType = piece[0];  // e.g., 'p' for pawn, 'r' for rook, etc.
-    
-    const pieceValues = {
-        'p': 1,  // Pawn value
-        'n': 3,  // Knight value
-        'b': 3,  // Bishop value
-        'r': 5,  // Rook value
-        'q': 9,  // Queen value
-        'k': 0   // King value (not typically evaluated, but can be for king safety)
-    };
-
-    return pieceValues[pieceType] || 0;  // Return 0 if the piece is not recognized
 };
