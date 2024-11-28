@@ -1,0 +1,64 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: black;
+    color: white;
+    text-align: center;
+    margin: 0;
+    padding: 0;
+}
+
+#startButton {
+    background-color: #6cb06e;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    cursor: pointer;
+    margin-top: 20px;
+}
+#startButton:hover {
+    background-color: #45a049;
+}
+
+#stopButton {
+    background-color: #6cb06e;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    cursor: pointer;
+    margin-top: 20px;
+}
+#stopButton:hover {
+    background-color: #45a049;
+}
+
+#resetButton {
+    background-color: #6cb06e;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    cursor: pointer;
+    margin-top: 20px;
+}
+#resetButton:hover {
+    background-color: #45a049;
+}
+
+#saveButton {
+    background-color: #6cb06e;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    cursor: pointer;
+    margin-top: 20px;
+}
+#saveButton:hover {
+    background-color: #45a049;
+}
+
+#canvas {
+    border: 2px solid #333;
+    margin: 20px auto;
+    display: block;
+    width: 600px;
+    height: 500px;
+}

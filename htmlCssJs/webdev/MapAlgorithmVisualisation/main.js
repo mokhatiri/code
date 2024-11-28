@@ -14,6 +14,7 @@ let M;
 let N;
 let isStopped = false;
 let counter = 0;
+let LoopsRandomisation = 20;
 
 async function wait(){
     return new Promise(resolve => {
@@ -90,7 +91,7 @@ function Randomchoice(grid, x, y) {
         const ny = y + dy;
 
         if (nx >= 0 && nx < grid.length && ny >= 0 && ny < grid[0].length) {
-            if(grid[nx][ny].visited || !Math.floor(Math.random()*2))neighbors.push([dx, dy]);
+            if(grid[nx][ny].visited || !Math.floor(Math.random()*LoopsRandomisation))neighbors.push([dx, dy]);
         }
     }
 
@@ -207,9 +208,94 @@ async function RDFS(n,m){
     }
 
     await drawMaze(grid, n, m);
-    document.getElementById('map').style.borderColor = '#4f5fbf93';
-    alert("Click on the map to start the algorithm");
-    document.getElementById('map').addEventListener('click', Choice);
+   Grid = grid;
+}
+
+function Parent(Sets, coords){
+    if(!Sets[coords]) {
+        Sets[coords] = coords;
+        return coords;
+    }
+    let parent = Sets[coords];
+    while(parent != Sets[parent]){
+        parent = Sets[parent];
+    }
+    return parent;
+}
+
+function Union(Sets, coords1, coords2){
+    let parent1 = Parent(Sets, coords1);
+    let parent2 = Parent(Sets, coords2);
+    if(parent1 != parent2){
+        Sets[parent2] = parent1;
+    }
+}
+async function R_Kruskal(n,m){
+    const grid = new Array(n);
+    for(let i = 0; i < n; i++){
+        grid[i] = new Array(m);
+        for(let j = 0; j < m; j++){
+            grid[i][j] = new cell();
+        }
+    }
+        /*
+        Create a list of all adjacent couples, and create a set for the future sets (Sets).
+        For each couple of cells, in some random order:
+            If the couples are divided by a wall and belong to distinct sets:
+                Remove the current wall.
+            Join the sets of the formerly divided cells.
+        */
+
+    let couples = [];
+    let Sets = {}; // in this set each cell is a hash and it points to the set it belongs to
+    for(let i = 0; i < n; i++){
+        for(let j = 0; j < m; j++){
+            // for non redunduncy we only add the couples to the right and bottom
+            if(i < n-1){
+                couples.push([[i,j],[i+1,j]]);
+            }
+            if(j < m-1){
+                couples.push([[i,j],[i,j+1]]);
+            }
+        }
+    }
+    // for each couple of cells in some random order
+    couples.sort(() => Math.random() - 0.5);
+
+    for(let i = 0; i < couples.length; i++){
+
+        let coords1 = couples[i][0];
+        let coords2 = couples[i][1];
+
+        // if one of the cells doesn't exist then add it to the set.
+        if(!Sets[coords1]){
+            Sets[coords1] = coords1;
+        }
+        if(!Sets[coords2]){
+            Sets[coords2] = coords2;
+        }
+        // if the cells are in the same set then skip
+        // to check this we are going to use the Parent(Sets,coords) function
+        if (Parent(Sets,coords1) == Parent(Sets,coords2)){
+            // sometimes we may link them for a bit of loops in the maze
+            if(Math.floor(Math.random()*LoopsRandomisation)){
+             continue;
+            }
+             // if not pass
+        }
+        // if the cells are not in the same set then remove the wall between them and join the sets
+        // first determine the position of coords2 in function of coords1
+        visit(grid, coords1[0], coords1[1], [coords2[0]-coords1[0], coords2[1]-coords1[1]]);
+        grid[coords1[0]][coords1[1]].visited = false;
+        grid[coords2[0]][coords2[1]].visited = false;
+        // join the sets
+        Union(Sets, coords1, coords2);
+
+        await drawMaze(grid, n, m); 
+        await wait();
+    }
+
+    await drawMaze(grid, n, m);
     Grid = grid;
 }
 
@@ -218,7 +304,8 @@ window.onload = async function () {
     let m = prompt("Choose M:");
     N = n; M = m;
 
-    RDFS(n,m);
+    R_prims(n,m);
+    document.getElementById('map').addEventListener('click', Choice);
 }
 
 function Choice(){
