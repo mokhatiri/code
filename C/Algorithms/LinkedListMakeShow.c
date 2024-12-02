@@ -10,6 +10,7 @@ typedef struct
     node * head;
 } likedList;
 
+// Function to create a linked list from an array of integers
 node* create_from_list(int* list) {
     node* head = NULL;
     int i = 0; // Start from the first element
@@ -26,6 +27,7 @@ node* create_from_list(int* list) {
     return head;
 }
 
+// Function to display a linked list as a string
 char* show_list(likedList* list) {
     node* ptr = list->head;
     int len = 0;
