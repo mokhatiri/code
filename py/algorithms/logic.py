@@ -1,7 +1,7 @@
 # the logic this goes with is :
 # 1. let's make every operand a class of its own
 # 2. let's make a sentence class
-# 3. let's make a symbol class
+# 3. let's make a symbol class 
 # 4. let's do the model checking
 
 # credit to CS50 AI for the idea
@@ -275,6 +275,7 @@ def model_check(knowledge, query):
     # Get set of all symbols
     symbols = set(knowledge.symbols()).union(query.symbols())
 
+    print(f"Symbols: {symbols}")
     # Check all possible models
     for model in all_models(symbols):
         try:
@@ -282,7 +283,7 @@ def model_check(knowledge, query):
             if knowledge.evaluate(model) and not query.evaluate(model):
 
                 # if you want to print the countermodel, uncomment the following line:
-                # print(f"Model {model} is a countermodel for {knowledge} entails {query}")
+                print(f"Model {model} is a countermodel for {knowledge} entails {query}")
                 return False
         except:
             raise Exception(f"Error in model_check in model {model}")

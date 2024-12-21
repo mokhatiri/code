@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Login</title>
+        <link rel="stylesheet" href="style.css">
+        <script lang="JavaScript" src="script.js"></script>
+    </head>
+    <body>
+        <div class = "main">
+            <div id = "header">Formulaire d'inscription controlé coté client</div>
+            <form>
+                <label for="civilite"></label>
+                <select id="civilite">
+                    <option>Civilité</option>
+                    <option>Monsieur</option>
+                    <option>Madame</option>
+                </select>
+
+                <label for="nom"></label>
+                <input id = "nom" type="text" placeholder="Votre prenom">
+                
+                <label for="prenom"></label>
+                <input id = "prenom" type="text" placeholder="Votre nom">
+                
+                <label for="birthdate"></label>
+                <input id="birthdate" type="date">
+
+                <label for="mail"></label>
+                <input id="mail" type="email" placeholder="Votre mail">
+
+                <label for="mailconfirm"></label>
+                <input id="mailconfirm" type="email" placeholder="Confirmer votre mail">
+
+                <label for="password"></label>
+                <input id="password" type="password" placeholder="mot de passe">
+
+                <label for="passwordConfirm"></label>
+                <input id="passwordConfirm" type="password" placeholder="Confirmer votre mot de passe">
+
+                <label for="validate"></label>
+                <input id="validate" type="submit" value="Valider" onclick="checkValidation(event)">
+            </form>
+        </div>
+    </body>
+</html>

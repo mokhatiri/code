@@ -304,7 +304,7 @@ window.onload = async function () {
     let m = prompt("Choose M:");
     N = n; M = m;
 
-    R_prims(n,m);
+    RDFS(n,m);
     document.getElementById('map').addEventListener('click', Choice);
 }
 
