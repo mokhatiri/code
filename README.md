@@ -43,5 +43,7 @@ Guidelines for contributing to the project.
 
 5- Open a pull request.
 
+(to contribute please send me a mail)
+
 ## License
 no license
