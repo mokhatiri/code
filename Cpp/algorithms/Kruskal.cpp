@@ -11,7 +11,7 @@ void Union(unordered_map<int,int>& M ,int x, int y);
 vector<vector<int>> kruskal(vector<vector<int>> graph){
     vector<vector<int>> mst;
     unordered_map<int,int> parent;
-    // sort the graph by wieght the third element.
+    // sort the graph by weight the third element.
     sort(graph.begin(), graph.end(), [](const vector<int>& a, const vector<int>& b) {
         return a[2] < b[2];
     });
