@@ -5,31 +5,18 @@ A repository for code in general with different programming languages. It contai
 
 ## Table of Contents
 - [Installation](#installation)
-- [Usage](#usage)
 - [Contributing](#contributing)
 - [License](#license)
 
 ## Installation
-Instructions for setting up the project locally.
-
 ```sh
 # Clone the repository
 git clone https://github.com/mokhatiri/code.git
 
 # Navigate to the project directory
 cd code
-
-# Install dependencies (if any)
-npm install
 ```
 
-## Usage
-Instructions for running or using the application.
-
-```sh
-# Example command to run the project
-npm start
-```
 ## Contributing
 Guidelines for contributing to the project.
 
